@@ -1,0 +1,21 @@
+# /etc/systemd/system/oat.service
+# TrendMicro OAT pull to SIEM
+
+[Unit]
+Description=TrendMicro OAT pull to SIEM
+After=network.target
+
+[Service]
+PIDFile=/var/run/oat.pid
+User=root
+Group=root
+WorkingDirectory=/var/anlyz/oat
+ExecStart=/var/anlyz/oat/oat-pull --config=/var/anlyz/oat/config.yml
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+# 'on-failure' or 'always'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
